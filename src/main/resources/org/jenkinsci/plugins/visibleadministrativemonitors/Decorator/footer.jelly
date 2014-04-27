@@ -1,0 +1,20 @@
+<j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:d="jelly:define" xmlns:l="/lib/layout" xmlns:t="/lib/hudson" xmlns:f="/lib/form">
+    <j:if test="${it.shouldDisplay()}">
+        <div
+                style="position: fixed; top: 2px; left: 50%; padding: 3px; margin-left: -350px; width: 700px; border: 1px solid black; z-index: 1000; background-color: #ffffdd; cursor: pointer;"
+                onclick="if(document.getElementById('visible-am-list').style.display=='block')document.getElementById('visible-am-list').style.display='none';else document.getElementById('visible-am-list').style.display='block';">
+            <h4 style="text-align: center; font-size: 14px; font-weight: bold; margin: 0;">Administrative monitors are active</h4>
+            <div id="visible-am-list">
+                <j:forEach var="am" items="${it.activeAdministrativeMonitors}">
+                    <st:include page="message.jelly" it="${am}" />
+                </j:forEach>
+                <p style="text-align: center; margin: 0;">
+                    <a href="${rootURL}/manage" onclick="document.location.href='${rootURL}/manage';event.stopPropagation();">Manage Jenkins</a>
+                </p>
+            </div>
+            <script type="text/javascript">
+                document.getElementById('visible-am-list').style.display='none';
+            </script>
+        </div>
+    </j:if>
+</j:jelly>
