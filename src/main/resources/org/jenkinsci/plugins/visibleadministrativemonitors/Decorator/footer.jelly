@@ -6,7 +6,7 @@
                 <a href="#" 
                         style="color: inherit;"
                         onclick="if(document.getElementById('visible-am-list').style.display=='block')document.getElementById('visible-am-list').style.display='none';else document.getElementById('visible-am-list').style.display='block';">
-                    Administrative monitors are active
+                    ${%Administrative monitors are active}
                 </a>
             </h4>
         </div>
@@ -15,8 +15,8 @@
                 <st:include page="message.jelly" it="${am}" />
             </j:forEach>
             <p style="text-align: center; margin: 10px 0 0 0;">
-                <a href="${rootURL}/manage" onclick="document.location.href='${rootURL}/manage';">Manage Jenkins</a> | 
-                <a href="#" onclick="document.getElementById('visible-am-list').style.display='none';">Dismiss Popup</a>
+                <a href="${rootURL}/manage" onclick="document.location.href='${rootURL}/manage';">${%Manage Jenkins}</a> | 
+                <a href="#" onclick="document.getElementById('visible-am-list').style.display='none';">${%Close Popup}</a>
             </p>
         </div>
         <script type="text/javascript">
