@@ -1,10 +1,10 @@
 <j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:d="jelly:define" xmlns:l="/lib/layout" xmlns:t="/lib/hudson" xmlns:f="/lib/form">
     <j:if test="${it.shouldDisplay()}">
         <div
-                style="position: fixed; top: 2px; left: 50%; padding: 3px; margin-left: -150px; width: 300px;">
+                style="position: fixed; top: 5px; left: 50%; padding: 3px; margin-left: -150px; width: 300px;">
             <h4 style="text-align: center; font-size: 14px; font-weight: bold; color: white; margin: 0;">
                 <a href="#" 
-                        style="color: inherit;"
+                        style="color: inherit; text-decoration: none;"
                         onclick="if(document.getElementById('visible-am-list').style.display=='block')document.getElementById('visible-am-list').style.display='none';else document.getElementById('visible-am-list').style.display='block';">
                     ${%Administrative monitors are active}
                 </a>
