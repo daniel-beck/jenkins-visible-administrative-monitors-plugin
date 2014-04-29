@@ -41,10 +41,6 @@ public class Decorator extends PageDecorator {
         // redundant
         ignoredJenkinsRestOfUrls.add("manage");
 
-        // don't annoy users that might be working to resolve the issue
-        ignoredJenkinsRestOfUrls.add("configure");
-        ignoredJenkinsRestOfUrls.add("configureSecurity");
-
         // otherwise this would be added to every internal context menu building request
         ignoredJenkinsRestOfUrls.add("contextMenu");
     }

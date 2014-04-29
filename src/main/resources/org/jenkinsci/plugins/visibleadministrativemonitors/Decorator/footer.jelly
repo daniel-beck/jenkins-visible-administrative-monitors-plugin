@@ -1,8 +1,7 @@
 <j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:d="jelly:define" xmlns:l="/lib/layout" xmlns:t="/lib/hudson" xmlns:f="/lib/form">
     <j:if test="${it.shouldDisplay()}">
-        <div
-                style="position: fixed; top: 5px; left: 50%; padding: 3px; margin-left: -150px; width: 300px;">
-            <h4 style="text-align: center; font-size: 14px; font-weight: bold; color: white; margin: 0;">
+        <div style="position: absolute; top: 6px; left: 50%; padding: 3px; margin-left: -200px; width: 400px;">
+            <h4 style="text-align: center; font-size: 11px; font-weight: bold; color: white; margin: 0;">
                 <a href="#" 
                         style="color: inherit; text-decoration: none;"
                         onclick="if(document.getElementById('visible-am-list').style.display=='block')document.getElementById('visible-am-list').style.display='none';else document.getElementById('visible-am-list').style.display='block';">
@@ -16,7 +15,7 @@
             </j:forEach>
             <p style="text-align: center; margin: 10px 0 0 0;">
                 <a href="${rootURL}/manage" onclick="document.location.href='${rootURL}/manage';">${%Manage Jenkins}</a> | 
-                <a href="#" onclick="document.getElementById('visible-am-list').style.display='none';">${%Close Popup}</a>
+                <a href="#" onclick="document.getElementById('visible-am-list').style.display='none';">${%Close}</a>
             </p>
         </div>
         <script type="text/javascript">
