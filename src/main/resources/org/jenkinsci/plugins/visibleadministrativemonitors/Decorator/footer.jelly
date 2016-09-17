@@ -1,17 +1,18 @@
 <j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:d="jelly:define" xmlns:l="/lib/layout" xmlns:t="/lib/hudson" xmlns:f="/lib/form">
     <j:if test="${it.shouldDisplay()}">
-        <div style="position: absolute; top: 6px; left: 50%; padding: 3px; margin-left: -200px; width: 400px;">
-            <h4 style="text-align: center; font-size: 11px; font-weight: bold; color: white; margin: 0;">
-                <a href="#" 
-                        style="color: inherit; text-decoration: none;"
-                        onclick="if(document.getElementById('visible-am-list').style.display=='block')document.getElementById('visible-am-list').style.display='none';else document.getElementById('visible-am-list').style.display='block';">
-                    ${%Administrative monitors are active}
+        <div id="visible-am-button" style="float: right; background-color: red; ">
+            <h4 style="text-align: center; padding: 10px 15px; font-size: 20px; font-weight: bold; color: white; margin: 0;">
+                <a href="#"
+                   style="color: inherit; text-decoration: none;"
+                   onclick="if(document.getElementById('visible-am-list').style.display=='block')document.getElementById('visible-am-list').style.display='none';else document.getElementById('visible-am-list').style.display='block';">
+                        ${it.activeAdministrativeMonitorsCount}
                 </a>
             </h4>
         </div>
-        <div id="visible-am-list" style="position: fixed; top: 40px; left: 50%; margin-left: -350px; width: 700px; z-index: 1000; padding: 10px; background-color: #ffffdd; border: 1px solid black; ">
+        <div id="visible-am-list" style="position: fixed; top: 40px; left: 50%; margin-left: -350px; width: 900px; z-index: 1000; padding: 10px; background-color: #ffffdd; border: 1px solid black; text-align: left;">
             <j:forEach var="am" items="${it.activeAdministrativeMonitors}">
                 <st:include page="message.jelly" it="${am}" />
+                <hr/>
             </j:forEach>
             <p style="text-align: center; margin: 10px 0 0 0;">
                 <a href="${rootURL}/manage" onclick="document.location.href='${rootURL}/manage';">${%Manage Jenkins}</a> | 
@@ -19,6 +20,7 @@
             </p>
         </div>
         <script type="text/javascript">
+            document.getElementById("header").appendChild(document.getElementById("visible-am-button"));
             document.getElementById('visible-am-list').style.display='none';
         </script>
     </j:if>

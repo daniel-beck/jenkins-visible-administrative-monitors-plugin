@@ -22,22 +22,9 @@ import java.util.logging.Logger;
 public class Decorator extends PageDecorator {
     private static final Logger LOGGER = Logger.getLogger(Decorator.class.getName());
 
-    private final Collection<String> ignoredMonitorNames = new ArrayList<String>();
-
     private final Collection<String> ignoredJenkinsRestOfUrls = new ArrayList<String>();
 
     public Decorator() {
-        ignoredMonitorNames.add(hudson.diagnosis.ReverseProxySetupMonitor.class.getName());
-
-        String additionalProperty = System.getProperty(getClass().getName() + ".ignoredMonitors");
-        if (additionalProperty != null) {
-            String[] additionals = additionalProperty.split(",");
-            for (String additional : additionals) {
-                LOGGER.config("Adding '" + additional.trim() + "' to ignored administrative monitors");
-                ignoredMonitorNames.add(additional.trim());
-            }
-        }
-
         // redundant
         ignoredJenkinsRestOfUrls.add("manage");
 
@@ -47,7 +34,7 @@ public class Decorator extends PageDecorator {
 
     @Override
     public String getDisplayName() {
-        return "Visible Administrative Monitors";
+        return "Visible Administrative Monitors"; // TODO i18n
     }
 
     public boolean isAnyAdministrativeMonitorActive() {
@@ -58,11 +45,15 @@ public class Decorator extends PageDecorator {
         Collection<AdministrativeMonitor> active = new ArrayList<AdministrativeMonitor>();
         Collection<AdministrativeMonitor> ams = new ArrayList<AdministrativeMonitor>(Jenkins.getInstance().administrativeMonitors);
         for (AdministrativeMonitor am : ams) {
-            if (am.isEnabled() && am.isActivated() && !ignoredMonitorNames.contains(am.getClass().getName())) {
+            if (am.isEnabled() && am.isActivated()) {
                 active.add(am);
             }
         }
         return active;
+    }
+
+    public int getActiveAdministrativeMonitorsCount() {
+        return getActiveAdministrativeMonitors().size();
     }
 
     public boolean shouldDisplay() throws IOException, ServletException {
@@ -104,6 +95,7 @@ public class Decorator extends PageDecorator {
 
             if (url.startsWith(req.getContextPath())) {
                 // https://github.com/stapler/stapler/issues/34
+                // only relevant for Jenkins 1.604 or older
                 url = url.substring(req.getContextPath().length());
 
                 if (url.startsWith("/")) {
