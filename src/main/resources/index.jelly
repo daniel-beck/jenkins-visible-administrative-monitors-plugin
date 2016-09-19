@@ -1,3 +1,4 @@
+<?jelly escape-by-default='true'?>
 <div>
   This plugin adds a short summary of the currently active administrative monitors to every page for administrators.
 </div>
