@@ -1,27 +1,136 @@
+<?jelly escape-by-default='true'?>
 <j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:d="jelly:define" xmlns:l="/lib/layout" xmlns:t="/lib/hudson" xmlns:f="/lib/form">
     <j:if test="${it.shouldDisplay()}">
-        <div id="visible-am-button" style="float: right; background-color: red; ">
-            <h4 style="text-align: center; padding: 10px 15px; font-size: 20px; font-weight: bold; color: white; margin: 0;">
-                <a href="#"
-                   style="color: inherit; text-decoration: none;"
-                   onclick="if(document.getElementById('visible-am-list').style.display=='block')document.getElementById('visible-am-list').style.display='none';else document.getElementById('visible-am-list').style.display='block';">
-                        ${it.activeAdministrativeMonitorsCount}
-                </a>
-            </h4>
-        </div>
-        <div id="visible-am-list" style="position: fixed; top: 40px; left: 50%; margin-left: -350px; width: 900px; z-index: 1000; padding: 10px; background-color: #ffffdd; border: 1px solid black; text-align: left;">
-            <j:forEach var="am" items="${it.activeAdministrativeMonitors}">
-                <st:include page="message.jelly" it="${am}" />
-                <hr/>
-            </j:forEach>
-            <p style="text-align: center; margin: 10px 0 0 0;">
-                <a href="${rootURL}/manage" onclick="document.location.href='${rootURL}/manage';">${%Manage Jenkins}</a> | 
-                <a href="#" onclick="document.getElementById('visible-am-list').style.display='none';">${%Close}</a>
-            </p>
+        <style type="text/css">
+        #visible-am-container {
+            float: right;
+        }
+        #visible-am-button {
+            text-align: center;
+            font-size: 20px;
+            font-weight: bold;
+            background-color: #e01716;
+            color: #fff;;
+            margin: 0;
+            line-height: 42px;
+            text-decoration: none;
+            min-width: 2em;
+            display: inline-block;
+            position: relative;
+            transition: all .1s;
+        }
+        #visible-am-button:hover, #visible-am-button:focus, #visible-am-button:active {
+            background: #e23635;
+        }
+        #visible-am-container.visible #visible-am-button {
+            box-shadow: inset 0px 1px 14px rgba(0,0,0,.5);
+        }
+        #visible-am-container div#visible-am-list {
+            position: absolute;
+            top: 37px;
+            right: 2%;
+            margin-left:2%;
+            height: auto;
+            z-index: 0;
+            padding: 2em;
+            border: 1px solid #aa;
+            text-align: left;
+            display: block;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 7px 20px rgba(0,0,0,.1);
+            transition: all .15s cubic-bezier(.84,.03,.21,.96);
+            opacity: 0;
+            transform: scale(0);
+        }
+        #visible-am-container.visible div#visible-am-list {
+            opacity: 1;
+            transform: scale(1);
+            z-index: 1000;
+        }
+        #visible-am-container #visible-am-button:after {
+            content: '';
+            display: inline-block;
+            position: absolute;
+            bottom: -5px;
+            left: 32%;
+            width: 0;
+            height: 0;
+            border-left: 7px solid transparent;
+            border-right: 7px solid transparent;
+            border-bottom: 7px solid #fff;
+            opacity: 0;
+            transition: all .05s;
+        }
+        #visible-am-container.visible #visible-am-button:after {
+            opacity: 1;
+            bottom: 4px;
+            transition: all .25s;
+        }
+        #visible-am-container .am-message {
+            display: block;
+            line-height: 1.4em;
+            margin-bottom: 1.4em;
+        }
+        </style>
+        <script>
+            function amCloser(e) {
+                var list = document.getElementById('visible-am-list');
+                var el = e.target;
+                while (el) {
+                    if (el === list) {
+                        return; // clicked in the list
+                    }
+                    el = el.parentElement;
+                }
+                hideVisibleAmList();
+            };
+            function amEscCloser(e) {
+                if (e.keyCode == 27) {
+                    amCloser(e);
+                }
+            };
+            function amContainer() {
+                return document.getElementById('visible-am-container');
+            };
+            function hideVisibleAmList(e) {
+                amContainer().classList.remove('visible');
+                document.removeEventListener('click', amCloser);
+                document.removeEventListener('keydown', amEscCloser);
+            }
+            function showVisibleAmList(e) {
+                amContainer().classList.add('visible');
+                setTimeout(function() {
+                    document.addEventListener('click', amCloser);
+                    document.addEventListener('keydown', amEscCloser);
+                }, 1);
+            }
+            function toggleVisibleAmList(e) {
+                if (amContainer().classList.contains('visible')) {
+                    hideVisibleAmList(e);
+                } else {
+                    showVisibleAmList(e);
+                }
+                e.preventDefault();
+            }
+        </script>
+        <div id="visible-am-container">
+            <a id="visible-am-button" href="#" onclick="toggleVisibleAmList(event)">
+                ${it.activeAdministrativeMonitorsCount}
+            </a>
+            <div id="visible-am-list">
+                <j:forEach var="am" items="${it.activeAdministrativeMonitors}">
+                    <div class="am-message">
+                    <st:include page="message.jelly" it="${am}" />
+                    </div>
+                </j:forEach>
+                <p style="text-align: center; margin: 10px 0 0 0;">
+                    <a href="${rootURL}/manage" onclick="document.location.href='${rootURL}/manage';">${%Manage Jenkins}</a>
+                </p>
+            </div>
         </div>
         <script type="text/javascript">
-            document.getElementById("header").appendChild(document.getElementById("visible-am-button"));
-            document.getElementById('visible-am-list').style.display='none';
+            document.getElementById("header").appendChild(document.getElementById("visible-am-container"));
         </script>
     </j:if>
 </j:jelly>
